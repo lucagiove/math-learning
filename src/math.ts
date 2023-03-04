@@ -26,8 +26,7 @@ program.action(async (number, options) => {
     const timesTable = new TimesTable(number, mode)
     let challenge = timesTable.challenge()
 
-    while (true) {
-
+    while (challenge) {
         const answer = await rl.question(challenge.toString());
         const result = challenge.answer(parseNumber(answer))
         if(result.correct) {
@@ -37,6 +36,7 @@ program.action(async (number, options) => {
             console.log(' Sbagliato!! 🤯 riprova')
         }
     }
+    rl.close()
 })
 
 program.parse(process.argv)

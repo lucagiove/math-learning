@@ -20,7 +20,8 @@ export class TimesTable {
         }
     }
 
-    challenge(number2?: number): Challenge {
+    challenge(number2?: number): Challenge | null{
+        if(this.isFinished()) return  null
         const result = new Challenge(this.number1, number2 || this.currentNumber)
         this.nextNumber();
         return result
@@ -38,6 +39,16 @@ export class TimesTable {
                 this.currentNumber = Math.floor(Math.random() * 11);
                 break
         }
+    }
+
+    private isFinished() {
+        switch (this.mode) {
+            case EMode.ascending:
+                return this.currentNumber === 10
+            case EMode.descending:
+                return this.currentNumber === 0
+        }
+        return  false
     }
 }
 
@@ -59,7 +70,7 @@ export class Challenge {
 
 interface Answer {
     toString(): string
-    correct: boolean
+    correct?: boolean
 }
 
 class CorrectAnswer implements Answer {
