@@ -5,7 +5,7 @@
   },
   "name": "math-learning",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "math.js",
   "devDependencies": {
     "@types/figlet": "^1.5.5",
     "@types/jest": "^29.4.0",
@@ -22,5 +22,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "bin": {
+    "execute": "math.js"
+  }
 }
