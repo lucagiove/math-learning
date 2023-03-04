@@ -40,6 +40,19 @@ describe('Given a times table value of 2 in descending mode', function () {
     });
 });
 
+describe('Given a times table value of 2 in random mode', function () {
+    const timesTable = new TimesTable(2, EMode.random)
+
+    describe('When I ask for a challenge twice', function () {
+        const challenge1 = timesTable.challenge()
+        const challenge2 = timesTable.challenge()
+
+        it('might not return 2 x 0 and 2 x 1', function () {
+            expect(`${challenge1.toString()}${challenge2.toString()}`).not.toEqual('2 x 0 = 2 x 1 = ')
+        });
+    });
+});
+
 describe('Given a times table value of 2 multiplied to 1 challenge', function () {
     const timesTable = new TimesTable(2, EMode.ascending)
     const challenge = timesTable.challenge(1)

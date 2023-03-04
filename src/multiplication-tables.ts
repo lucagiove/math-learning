@@ -7,9 +7,17 @@ export enum EMode {
 export class TimesTable {
     private currentNumber: number
     constructor(private readonly number1: number, private readonly mode: EMode) {
-        this.currentNumber = 0
-        if(mode === EMode.descending)
-            this.currentNumber = 10
+        switch (this.mode) {
+            case EMode.ascending:
+                this.currentNumber = 0
+                break
+            case EMode.descending:
+                this.currentNumber = 10
+                break
+            case EMode.random:
+                this.currentNumber = Math.floor(Math.random() * 11);
+                break
+        }
     }
 
     challenge(number2?: number): Challenge {
@@ -19,11 +27,17 @@ export class TimesTable {
     }
 
     private nextNumber() {
-        if(this.mode === EMode.ascending) {
-            this.currentNumber += 1
-            return
+        switch (this.mode) {
+            case EMode.ascending:
+                this.currentNumber += 1
+                break
+            case EMode.descending:
+                this.currentNumber -= 1
+                break
+            case EMode.random:
+                this.currentNumber = Math.floor(Math.random() * 11);
+                break
         }
-        this.currentNumber -= 1
     }
 }
 
@@ -45,15 +59,18 @@ export class Challenge {
 
 interface Answer {
     toString(): string
+    correct: boolean
 }
 
 class CorrectAnswer implements Answer {
+    correct = true
     toString() {
         return 'Correct!'
     }
 }
 
 class WrongAnswer implements Answer {
+    correct = false
     toString() {
         return 'Wrong!'
     }
