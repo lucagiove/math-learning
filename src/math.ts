@@ -15,7 +15,8 @@ program
 
 program
     .argument('<numero>', "Tabellina da imparare")
-    .option('-m, --mode [modo]', 'Ordine: crescente, descrescente, casuale', 'casuale')
+    .option('-m, --mode [mode]', 'Ordine: crescente, descrescente, casuale', 'casuale')
+    .option('-t, --timeout [timeout]', 'Tempo per rispondere in ms', '')
 
 program.action(async (number, options) => {
     const rl = readline.createInterface({
@@ -23,19 +24,25 @@ program.action(async (number, options) => {
         output: process.stdout
     })
 
-    let mode = parseMode(options.mode);
+    const mode = parseMode(options.mode);
+    const timeout = parseNumber(options.timeout)
 
-    const timesTable = new TimesTable(number, mode)
+    const timesTable = new TimesTable(number, mode, timeout)
     let challenge = timesTable.challenge()
 
     while (challenge) {
         const answer = await rl.question(challenge.toString());
         const result = challenge.answer(parseNumber(answer))
-        if(result.correct) {
+        if (result.correct) {
             console.log(' Giusto!! 🥳')
             challenge = timesTable.challenge()
         } else {
             console.log(' Sbagliato!! 🤯 riprova')
+        }
+
+        if (result.timedOut) {
+            console.log(` ⏱️ Ci hai messo ${result.elapsedTime}ms`)
+            console.log(' Sei stato troppo lento/a!! 🐌')
         }
     }
     rl.close()
