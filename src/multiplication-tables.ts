@@ -57,12 +57,12 @@ export class TimesTable {
 }
 
 export class Challenge {
-    private readonly requestedTime: Date
+    private readonly requestedTime: number
 
     constructor(private readonly number1: number,
                 private readonly number2: number,
                 private readonly timeOut?: number) {
-        this.requestedTime = new Date()
+        this.requestedTime = Date.now()
     }
 
     toString() {
@@ -84,7 +84,7 @@ export class Challenge {
     }
 
     private countElapsedTime() {
-        return new Date().getTime() - this.requestedTime.getTime();
+        return Date.now() - this.requestedTime;
     }
 
     private isCorrect(number: number) {

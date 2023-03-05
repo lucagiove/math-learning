@@ -2,6 +2,7 @@
 
 import {Command} from "commander";
 import figlet from "figlet";
+import chalk from 'chalk';
 import * as readline from 'node:readline/promises';
 import {EMode, TimesTable} from "./multiplication-tables";
 
@@ -34,15 +35,17 @@ program.action(async (number, options) => {
         const answer = await rl.question(challenge.toString());
         const result = challenge.answer(parseNumber(answer))
         if (result.correct) {
-            console.log(' Giusto!! 🥳')
+            console.log(chalk.green(' Giusto!! 🥳'))
             challenge = timesTable.challenge()
         } else {
-            console.log(' Sbagliato!! 🤯 riprova')
+            console.log(chalk.red(' Sbagliato!!') + ' 🤯 riprova')
         }
 
         if (result.timedOut) {
-            console.log(` ⏱️ Ci hai messo ${result.elapsedTime}ms`)
-            console.log(' Sei stato troppo lento/a!! 🐌')
+            console.log(' ⏱️ Ci hai messo ' + chalk.red(result.elapsedTime / 1000) + ' secondi')
+            console.log(chalk.yellow(' Sei stato/a troppo lento/a!! 🐌'))
+        } else {
+            console.log(' ⏱️ Ci hai messo ' + chalk.green(result.elapsedTime / 1000) + ' secondi')
         }
     }
     rl.close()
