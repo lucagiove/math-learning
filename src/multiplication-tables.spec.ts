@@ -1,4 +1,4 @@
-import {Challenge, EMode, TimesTable} from "./multiplication-tables";
+import {Answer, Challenge, EMode, TimesTable} from "./multiplication-tables";
 
 describe('Given a times table value of 2 in ascending mode', function () {
     const timesTable = new TimesTable(2, EMode.ascending)
@@ -153,3 +153,49 @@ describe('Given a times table value of 3', function () {
         });
     });
 });
+
+describe('Given a times table value of 2 with timeout', function () {
+    const timesTable = new TimesTable(2, EMode.ascending, 20)
+
+    describe('When I answer a challenge after timeout', function () {
+        let result: Answer | undefined
+        let msToDelay = 25;
+
+
+        beforeEach(async function () {
+            const challenge = timesTable.challenge()
+            await delay(msToDelay)
+            result = challenge?.answer(1)
+
+        });
+
+        it('should return an answer with the elapsed time', function () {
+            expect(result?.elapsedTime).toBeGreaterThanOrEqual(msToDelay)
+        });
+
+        it('should return a timed out answer', function () {
+            expect(result?.timedOut).toBeTruthy()
+        });
+    });
+
+    describe('When I answer a challenge before timeout', function () {
+        let result: Answer | undefined
+
+        beforeEach(function () {
+            const challenge = timesTable.challenge()
+            result = challenge?.answer(1)
+        });
+
+        it('should return an answer with the elapsed time', function () {
+            expect(result?.elapsedTime).toBeGreaterThanOrEqual(0)
+        });
+
+        it('should return a not timed out answer', function () {
+            expect(result?.timedOut).toBeFalsy()
+        });
+    });
+})
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

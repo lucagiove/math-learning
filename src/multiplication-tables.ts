@@ -6,7 +6,11 @@ export enum EMode {
 
 export class TimesTable {
     private currentNumber: number
-    constructor(private readonly number1: number, private readonly mode: EMode) {
+
+    constructor(private readonly number1: number,
+                private readonly mode: EMode,
+                private readonly timeOut?: number
+    ) {
         switch (this.mode) {
             case EMode.ascending:
                 this.currentNumber = 0
@@ -20,9 +24,9 @@ export class TimesTable {
         }
     }
 
-    challenge(number2?: number): Challenge | null{
-        if(this.isFinished()) return  null
-        const result = new Challenge(this.number1, number2 || this.currentNumber)
+    challenge(number2?: number): Challenge | null {
+        if (this.isFinished()) return null
+        const result = new Challenge(this.number1, number2 || this.currentNumber, this.timeOut)
         this.nextNumber();
         return result
     }
@@ -48,13 +52,17 @@ export class TimesTable {
             case EMode.descending:
                 return this.currentNumber === 0
         }
-        return  false
+        return false
     }
 }
 
 export class Challenge {
+    private readonly requestedTime: Date
 
-    constructor(private readonly number1: number, private readonly number2: number) {
+    constructor(private readonly number1: number,
+                private readonly number2: number,
+                private readonly timeOut?: number) {
+        this.requestedTime = new Date()
     }
 
     toString() {
@@ -62,26 +70,48 @@ export class Challenge {
     }
 
     answer(number: number): Answer {
-        if (number === this.number1 * this.number2)
-            return new CorrectAnswer()
-        return new WrongAnswer()
+        const elapsedTime = this.countElapsedTime()
+        if (this.isCorrect(number))
+            return new CorrectAnswer(elapsedTime, this.checkTimeOut(elapsedTime))
+        return new WrongAnswer(elapsedTime, this.checkTimeOut(elapsedTime))
+    }
+
+    private checkTimeOut(elapsedTime: number) {
+        let timedOut: boolean = false
+        if (this.timeOut)
+            timedOut = elapsedTime > this.timeOut
+        return timedOut;
+    }
+
+    private countElapsedTime() {
+        return new Date().getTime() - this.requestedTime.getTime();
+    }
+
+    private isCorrect(number: number) {
+        return number === this.number1 * this.number2;
     }
 }
 
-interface Answer {
-    toString(): string
-    correct?: boolean
+export abstract class Answer {
+    abstract toString(): string
+
+    abstract correct: boolean
+
+    constructor(readonly elapsedTime: number, readonly timedOut: boolean) {
+    }
 }
 
-class CorrectAnswer implements Answer {
+class CorrectAnswer extends Answer {
     correct = true
+
     toString() {
         return 'Correct!'
     }
 }
 
-class WrongAnswer implements Answer {
+class WrongAnswer extends Answer {
     correct = false
+
     toString() {
         return 'Wrong!'
     }
