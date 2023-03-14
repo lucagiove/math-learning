@@ -1,50 +1,64 @@
-export enum EMode {
+import {Answer, CorrectAnswer, WrongAnswer} from "./answer.class";
+import {IChallenge, IMathGame} from "./math-game.interface";
+
+export enum ETimesTableMode {
     ascending = 'ascending',
     descending = 'descending',
     random = 'random'
 }
 
-export interface IMathGame {
-    challenge: () => Challenge | null
+export class TimesTable implements IMathGame {
+    private timesTableMode: IMathGame
+
+    constructor(private readonly number1: number,
+                private readonly mode: ETimesTableMode,
+                private readonly timeOut?: number
+    ){
+        this.timesTableMode = new TimesTableModes(number1, mode, timeOut)
+    }
+
+    challenge(number?: number): IChallenge | null {
+        return this.timesTableMode.challenge(number)
+    }
+
 }
 
-
-export class TimesTable implements IMathGame {
+export class TimesTableModes implements IMathGame {
     private currentNumber: number
 
     constructor(private readonly number1: number,
-                private readonly mode: EMode,
+                private readonly mode: ETimesTableMode,
                 private readonly timeOut?: number
     ) {
         switch (this.mode) {
-            case EMode.ascending:
+            case ETimesTableMode.ascending:
                 this.currentNumber = 0
                 break
-            case EMode.descending:
+            case ETimesTableMode.descending:
                 this.currentNumber = 10
                 break
-            case EMode.random:
+            case ETimesTableMode.random:
                 this.currentNumber = Math.floor(Math.random() * 11);
                 break
         }
     }
 
-    challenge(number2?: number): Challenge | null {
+    challenge(number2?: number): IChallenge | null {
         if (this.isFinished()) return null
-        const result = new Challenge(this.number1, number2 || this.currentNumber, this.timeOut)
+        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
         this.nextNumber();
         return result
     }
 
     private nextNumber() {
         switch (this.mode) {
-            case EMode.ascending:
+            case ETimesTableMode.ascending:
                 this.currentNumber += 1
                 break
-            case EMode.descending:
+            case ETimesTableMode.descending:
                 this.currentNumber -= 1
                 break
-            case EMode.random:
+            case ETimesTableMode.random:
                 this.currentNumber = Math.floor(Math.random() * 11);
                 break
         }
@@ -52,16 +66,16 @@ export class TimesTable implements IMathGame {
 
     private isFinished() {
         switch (this.mode) {
-            case EMode.ascending:
+            case ETimesTableMode.ascending:
                 return this.currentNumber === 10
-            case EMode.descending:
+            case ETimesTableMode.descending:
                 return this.currentNumber === 0
         }
         return false
     }
 }
 
-export class Challenge {
+export class TimesTableChallenge implements IChallenge {
     private readonly requestedTime: number
 
     constructor(private readonly number1: number,
@@ -94,30 +108,5 @@ export class Challenge {
 
     private isCorrect(number: number) {
         return number === this.number1 * this.number2;
-    }
-}
-
-export abstract class Answer {
-    abstract toString(): string
-
-    abstract correct: boolean
-
-    constructor(readonly elapsedTime: number, readonly timedOut: boolean) {
-    }
-}
-
-class CorrectAnswer extends Answer {
-    correct = true
-
-    toString() {
-        return 'Correct!'
-    }
-}
-
-class WrongAnswer extends Answer {
-    correct = false
-
-    toString() {
-        return 'Wrong!'
     }
 }

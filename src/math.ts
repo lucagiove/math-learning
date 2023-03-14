@@ -4,7 +4,8 @@ import {Command} from "commander";
 import figlet from "figlet";
 import chalk from 'chalk';
 import * as readline from 'node:readline/promises';
-import {EMode, IMathGame, TimesTable} from "./multiplication-tables";
+import {ETimesTableMode, TimesTable} from "./multiplication-tables";
+import {IMathGame} from "./math-game.interface";
 
 console.log(figlet.textSync("Impara   la   matematica"));
 
@@ -34,13 +35,13 @@ program.action(async () => {
 program.parse(process.argv)
 
 function parseMode(mode: string) {
-    let result = EMode.random
+    let result = ETimesTableMode.random
     switch (mode) {
         case 'crescente':
-            result = EMode.ascending
+            result = ETimesTableMode.ascending
             break
         case 'decrescente':
-            result = EMode.descending
+            result = ETimesTableMode.descending
             break
     }
     return result;
