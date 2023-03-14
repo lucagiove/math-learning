@@ -4,7 +4,7 @@ import {Command} from "commander";
 import figlet from "figlet";
 import chalk from 'chalk';
 import * as readline from 'node:readline/promises';
-import {EMode, TimesTable} from "./multiplication-tables";
+import {EMode, IMathGame, TimesTable} from "./multiplication-tables";
 
 console.log(figlet.textSync("Impara   la   matematica"));
 
@@ -14,39 +14,19 @@ program
     .version("0.0.1")
     .description("Impara le tabelline")
 
-program
-    .argument('<numero>', "Tabellina da imparare")
-    .option('-m, --mode [mode]', 'Ordine: crescente, descrescente, casuale', 'casuale')
-    .option('-t, --timeout [timeout]', 'Tempo per rispondere in ms', '')
-
-program.action(async (number, options) => {
+program.action(async () => {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     })
 
-    const mode = parseMode(options.mode);
-    const timeout = parseNumber(options.timeout)
+    while (true) {
+        const number = parseNumber(await rl.question('Vuoi provare la tabellina del? '));
+        const mode = parseMode(await rl.question('In che ordine? [ crescente | decrescente | casuale ] '));
+        const timeout = parseNumber(await rl.question('In quanto tempo pensi di rispondere? '));
 
-    const timesTable = new TimesTable(number, mode, timeout)
-    let challenge = timesTable.challenge()
-
-    while (challenge) {
-        const answer = await rl.question(challenge.toString());
-        const result = challenge.answer(parseNumber(answer))
-        if (result.correct) {
-            console.log(chalk.green(' Giusto!! 🥳'))
-            challenge = timesTable.challenge()
-        } else {
-            console.log(chalk.red(' Sbagliato!!') + ' 🤯 riprova')
-        }
-
-        if (result.timedOut) {
-            console.log(' ⏱️ Ci hai messo ' + chalk.red(result.elapsedTime / 1000) + ' secondi')
-            console.log(chalk.yellow(' Sei stato/a troppo lento/a!! 🐌'))
-        } else {
-            console.log(' ⏱️ Ci hai messo ' + chalk.green(result.elapsedTime / 1000) + ' secondi')
-        }
+        const timesTable = new TimesTable(number, mode, timeout)
+        await runGame(timesTable, rl);
     }
     rl.close()
 })
@@ -68,4 +48,26 @@ function parseMode(mode: string) {
 
 function parseNumber(number: string) {
     return Number(number)
+}
+
+async function runGame(timesTable: IMathGame, rl: readline.Interface) {
+    let challenge = timesTable.challenge()
+
+    while (challenge) {
+        const answer = await rl.question(challenge.toString());
+        const result = challenge.answer(parseNumber(answer))
+        if (result.correct) {
+            console.log(chalk.green(' Giusto!! 🥳'))
+            challenge = timesTable.challenge()
+        } else {
+            console.log(chalk.red(' Sbagliato!!') + ' 🤯 riprova')
+        }
+
+        if (result.timedOut) {
+            console.log(' ⏱️ Ci hai messo ' + chalk.red(result.elapsedTime / 1000) + ' secondi')
+            console.log(chalk.yellow(' Sei stato/a troppo lento/a!! 🐌'))
+        } else {
+            console.log(' ⏱️ Ci hai messo ' + chalk.green(result.elapsedTime / 1000) + ' secondi')
+        }
+    }
 }

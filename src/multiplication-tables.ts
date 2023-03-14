@@ -4,7 +4,12 @@ export enum EMode {
     random = 'random'
 }
 
-export class TimesTable {
+export interface IMathGame {
+    challenge: () => Challenge | null
+}
+
+
+export class TimesTable implements IMathGame {
     private currentNumber: number
 
     constructor(private readonly number1: number,
