@@ -32,11 +32,10 @@ export class TimesTable implements IMathGame {
     }
 }
 
-class TimesTableDescending implements IMathGame {
-    private currentNumber: number
+abstract class TimesTableBase implements IMathGame{
+    protected abstract currentNumber: number
 
-    constructor(private readonly number1: number, private readonly timeOut?: number) {
-        this.currentNumber = 10
+    protected constructor(protected readonly number1: number, protected readonly timeOut?: number) {
     }
 
     challenge(number2?: number): IChallenge | null {
@@ -46,58 +45,60 @@ class TimesTableDescending implements IMathGame {
         return result
     }
 
-    private nextNumber() {
+    protected abstract nextNumber(): void;
+
+    protected abstract isFinished(): boolean;
+}
+
+class TimesTableDescending extends TimesTableBase{
+    protected currentNumber: number
+
+    constructor(number1: number, timeOut?: number) {
+        super(number1, timeOut);
+        this.currentNumber = 10
+    }
+    protected nextNumber() {
         this.currentNumber -= 1
     }
-
-    private isFinished() {
+    protected isFinished() {
         return this.currentNumber < 0
     }
 }
 
-class TimesTableAscending implements IMathGame {
-    private currentNumber: number
+class TimesTableAscending extends TimesTableBase {
+    protected currentNumber: number
 
-    constructor(private readonly number1: number, private readonly timeOut?: number) {
+    constructor(number1: number, timeOut?: number) {
+        super(number1, timeOut)
         this.currentNumber = 0
     }
 
-    challenge(number2?: number): IChallenge | null {
-        if (this.isFinished()) return null
-        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
-        this.nextNumber();
-        return result
-    }
-
-    private nextNumber() {
+    protected nextNumber() {
         this.currentNumber += 1
     }
 
-    private isFinished() {
+    protected isFinished() {
         return this.currentNumber === 10
     }
 }
 
-class TimesTableRandom implements IMathGame {
-    private currentNumber: number
+class TimesTableRandom extends TimesTableBase{
+    protected currentNumber: number
+    private counter: number
 
-    constructor(private readonly number1: number, private readonly timeOut?: number) {
+    constructor(number1: number, timeOut?: number) {
+        super(number1, timeOut)
         this.currentNumber = Math.floor(Math.random() * 11);
+        this.counter = 0
     }
 
-    challenge(number2?: number): IChallenge | null {
-        if (this.isFinished()) return null
-        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
-        this.nextNumber();
-        return result
-    }
-
-    private nextNumber() {
+    protected nextNumber() {
         this.currentNumber = Math.floor(Math.random() * 11);
+        this.counter += 1
     }
 
-    private isFinished() {
-        return false
+    protected isFinished() {
+        return this.counter > 10
     }
 }
 
