@@ -43,7 +43,7 @@ describe('Given a times table value of 2 in descending mode', function () {
 
     describe('When I ask for all challenges', function () {
         let challenge: IChallenge | null
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 0; i <= 11; i++) {
             challenge = timesTable.challenge()
         }
 

@@ -13,34 +13,30 @@ export class TimesTable implements IMathGame {
     constructor(private readonly number1: number,
                 private readonly mode: ETimesTableMode,
                 private readonly timeOut?: number
-    ){
-        this.timesTableMode = new TimesTableModes(number1, mode, timeOut)
+    ) {
+        switch (this.mode) {
+            case ETimesTableMode.ascending:
+                this.timesTableMode = new TimesTableAscending(number1, timeOut)
+                break
+            case ETimesTableMode.descending:
+                this.timesTableMode = new TimesTableDescending(number1, timeOut)
+                break
+            case ETimesTableMode.random:
+                this.timesTableMode = new TimesTableRandom(number1, timeOut)
+                break
+        }
     }
 
     challenge(number?: number): IChallenge | null {
         return this.timesTableMode.challenge(number)
     }
-
 }
 
-export class TimesTableModes implements IMathGame {
+class TimesTableDescending implements IMathGame {
     private currentNumber: number
 
-    constructor(private readonly number1: number,
-                private readonly mode: ETimesTableMode,
-                private readonly timeOut?: number
-    ) {
-        switch (this.mode) {
-            case ETimesTableMode.ascending:
-                this.currentNumber = 0
-                break
-            case ETimesTableMode.descending:
-                this.currentNumber = 10
-                break
-            case ETimesTableMode.random:
-                this.currentNumber = Math.floor(Math.random() * 11);
-                break
-        }
+    constructor(private readonly number1: number, private readonly timeOut?: number) {
+        this.currentNumber = 10
     }
 
     challenge(number2?: number): IChallenge | null {
@@ -51,26 +47,56 @@ export class TimesTableModes implements IMathGame {
     }
 
     private nextNumber() {
-        switch (this.mode) {
-            case ETimesTableMode.ascending:
-                this.currentNumber += 1
-                break
-            case ETimesTableMode.descending:
-                this.currentNumber -= 1
-                break
-            case ETimesTableMode.random:
-                this.currentNumber = Math.floor(Math.random() * 11);
-                break
-        }
+        this.currentNumber -= 1
     }
 
     private isFinished() {
-        switch (this.mode) {
-            case ETimesTableMode.ascending:
-                return this.currentNumber === 10
-            case ETimesTableMode.descending:
-                return this.currentNumber === 0
-        }
+        return this.currentNumber < 0
+    }
+}
+
+class TimesTableAscending implements IMathGame {
+    private currentNumber: number
+
+    constructor(private readonly number1: number, private readonly timeOut?: number) {
+        this.currentNumber = 0
+    }
+
+    challenge(number2?: number): IChallenge | null {
+        if (this.isFinished()) return null
+        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
+        this.nextNumber();
+        return result
+    }
+
+    private nextNumber() {
+        this.currentNumber += 1
+    }
+
+    private isFinished() {
+        return this.currentNumber === 10
+    }
+}
+
+class TimesTableRandom implements IMathGame {
+    private currentNumber: number
+
+    constructor(private readonly number1: number, private readonly timeOut?: number) {
+        this.currentNumber = Math.floor(Math.random() * 11);
+    }
+
+    challenge(number2?: number): IChallenge | null {
+        if (this.isFinished()) return null
+        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
+        this.nextNumber();
+        return result
+    }
+
+    private nextNumber() {
+        this.currentNumber = Math.floor(Math.random() * 11);
+    }
+
+    private isFinished() {
         return false
     }
 }
