@@ -1,6 +1,6 @@
 import {ETimesTableMode, TimesTable} from "./multiplication-tables";
 import {Answer} from "./answer.class";
-import {IChallenge} from "./math-game.interface";
+import {IChallenge} from "./challenge.class";
 
 describe('Given a times table value of 2 in ascending mode', function () {
     const timesTable = new TimesTable(2, ETimesTableMode.ascending)

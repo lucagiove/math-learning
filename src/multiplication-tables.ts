@@ -1,5 +1,5 @@
-import {Answer, CorrectAnswer, WrongAnswer} from "./answer.class";
-import {IChallenge, IMathGame} from "./math-game.interface";
+import {IMathGame, MathGame} from "./math-game.class";
+import {Challenge, IChallenge} from "./challenge.class";
 
 export enum ETimesTableMode {
     ascending = 'ascending',
@@ -32,45 +32,38 @@ export class TimesTable implements IMathGame {
     }
 }
 
-abstract class TimesTableBase implements IMathGame{
-    protected abstract currentNumber: number
 
-    protected constructor(protected readonly number1: number, protected readonly timeOut?: number) {
-    }
-
-    challenge(number2?: number): IChallenge | null {
-        if (this.isFinished()) return null
-        const result = new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
-        this.nextNumber();
-        return result
-    }
-
-    protected abstract nextNumber(): void;
-
-    protected abstract isFinished(): boolean;
-}
-
-class TimesTableDescending extends TimesTableBase{
+class TimesTableDescending extends MathGame {
     protected currentNumber: number
 
     constructor(number1: number, timeOut?: number) {
         super(number1, timeOut);
         this.currentNumber = 10
     }
+
+    createChallenge(number2: number | undefined) {
+        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
+    }
+
     protected nextNumber() {
         this.currentNumber -= 1
     }
+
     protected isFinished() {
         return this.currentNumber < 0
     }
 }
 
-class TimesTableAscending extends TimesTableBase {
+class TimesTableAscending extends MathGame {
     protected currentNumber: number
 
     constructor(number1: number, timeOut?: number) {
         super(number1, timeOut)
         this.currentNumber = 0
+    }
+
+    createChallenge(number2: number | undefined) {
+        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
     }
 
     protected nextNumber() {
@@ -82,7 +75,7 @@ class TimesTableAscending extends TimesTableBase {
     }
 }
 
-class TimesTableRandom extends TimesTableBase{
+class TimesTableRandom extends MathGame {
     protected currentNumber: number
     private counter: number
 
@@ -90,6 +83,10 @@ class TimesTableRandom extends TimesTableBase{
         super(number1, timeOut)
         this.currentNumber = Math.floor(Math.random() * 11);
         this.counter = 0
+    }
+
+    createChallenge(number2: number | undefined) {
+        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
     }
 
     protected nextNumber() {
@@ -102,38 +99,17 @@ class TimesTableRandom extends TimesTableBase{
     }
 }
 
-export class TimesTableChallenge implements IChallenge {
-    private readonly requestedTime: number
-
-    constructor(private readonly number1: number,
-                private readonly number2: number,
-                private readonly timeOut?: number) {
-        this.requestedTime = Date.now()
+class TimesTableChallenge extends Challenge {
+    constructor(number1: number,
+                number2: number,
+                timeOut?: number) {
+        super(number1, number2, timeOut);
     }
 
     toString() {
         return `${this.number1} x ${this.number2} = `
     }
-
-    answer(number: number): Answer {
-        const elapsedTime = this.countElapsedTime()
-        if (this.isCorrect(number))
-            return new CorrectAnswer(elapsedTime, this.checkTimeOut(elapsedTime))
-        return new WrongAnswer(elapsedTime, this.checkTimeOut(elapsedTime))
-    }
-
-    private checkTimeOut(elapsedTime: number) {
-        let timedOut: boolean = false
-        if (this.timeOut)
-            timedOut = elapsedTime > this.timeOut
-        return timedOut;
-    }
-
-    private countElapsedTime() {
-        return Date.now() - this.requestedTime;
-    }
-
-    private isCorrect(number: number) {
+    protected isCorrect(number: number) {
         return number === this.number1 * this.number2;
     }
 }

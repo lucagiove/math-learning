@@ -5,7 +5,7 @@ import figlet from "figlet";
 import chalk from 'chalk';
 import * as readline from 'node:readline/promises';
 import {ETimesTableMode, TimesTable} from "./multiplication-tables";
-import {IMathGame} from "./math-game.interface";
+import {IMathGame} from "./math-game.class";
 
 console.log(figlet.textSync("Impara   la   matematica"));
 
