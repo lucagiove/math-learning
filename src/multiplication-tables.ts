@@ -71,7 +71,7 @@ class TimesTableAscending extends MathGame {
     }
 
     protected isFinished() {
-        return this.currentNumber === 10
+        return this.currentNumber > 10
     }
 }
 
