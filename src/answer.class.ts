@@ -1,24 +1,17 @@
 export abstract class Answer {
-    abstract toString(): string
+    constructor(readonly elapsedTime: number, readonly timedOut: boolean) {}
 
-    abstract correct: boolean
-
-    constructor(readonly elapsedTime: number, readonly timedOut: boolean) {
-    }
+    abstract isCorrect(): boolean
 }
 
 export class CorrectAnswer extends Answer {
-    correct = true
-
-    toString() {
-        return 'Correct!'
+    isCorrect() {
+        return true
     }
 }
 
 export class WrongAnswer extends Answer {
-    correct = false
-
-    toString() {
-        return 'Wrong!'
+    isCorrect() {
+        return false
     }
 }

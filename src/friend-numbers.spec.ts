@@ -1,44 +1,7 @@
-import {ETimesTableMode} from "./multiplication-tables";
-import {MathGame} from "./math-game.class";
-import {Challenge, IChallenge} from "./challenge.class";
+import {FriendNumbers} from "./friend.numbers";
 
-class FriendNumbers extends MathGame {
-    protected currentNumber: number;
-
-    constructor(number1: number, timeOut?: number, mode?: ETimesTableMode) {
-        super(number1, timeOut)
-        this.currentNumber = 0
-    }
-
-    createChallenge(number2?: number): IChallenge | null {
-        return new FriendNumbersChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
-    }
-
-    isFinished(): boolean {
-        return this.currentNumber > 10;
-    }
-
-    nextNumber(): void {
-        this.currentNumber += 1
-    }
-}
-
-class FriendNumbersChallenge extends Challenge {
-    constructor(protected readonly number1: number, protected readonly number2: number, protected readonly timeOut?: number) {
-        super(number1, number2, timeOut);
-    }
-
-    toString(): string {
-        return `${this.number2} + ? = ${this.number1} `
-    }
-
-    protected isCorrect(answer: number): boolean {
-        return this.number2 + answer === this.number1;
-    }
-}
-
-describe('Given 10 as number to find the friends in ascending mode', function () {
-    const friendNumbers = new FriendNumbers(10)
+describe('Given ten friends number in ascending mode', function () {
+    const friendNumbers = new FriendNumbers()
 
     describe('When I ask for a challenge', function () {
         const challenge = friendNumbers.challenge()
@@ -61,7 +24,16 @@ describe('Given 10 as number to find the friends in ascending mode', function ()
         const result = challenge?.answer(8)
 
         it('should return correct', function () {
-            expect(result?.toString()).toEqual('Correct!')
+            expect(result?.isCorrect()).toBeTruthy()
+        });
+    });
+
+    describe('When I answer wrong', function () {
+        const challenge = friendNumbers.challenge()
+        const result = challenge?.answer(0)
+
+        it('should return wrong', function () {
+            expect(result?.isCorrect()).toBeFalsy()
         });
     });
 });

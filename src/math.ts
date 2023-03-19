@@ -5,44 +5,55 @@ import {ETimesTableMode, TimesTable} from "./multiplication-tables";
 import {IMathGame} from "./math-game.class";
 import inquirer from "inquirer";
 import chalk from "chalk";
+import {FriendNumbers} from "./friend.numbers";
+
+const gameConfigQuestions = [
+    {
+        type: 'input',
+        name: 'number',
+        message: 'Quale numero vuoi imparare?',
+        validate(val: number) {
+            return !isNaN(val)
+        }
+    },
+    {
+        type: 'list',
+        name: 'mode',
+        message: 'In che ordine?',
+        choices: [
+            {name: 'Crescente', value: ETimesTableMode.ascending},
+            {name: 'Decrescente', value: ETimesTableMode.descending},
+            {name: 'Casuale', value: ETimesTableMode.random},
+        ],
+    },
+    {
+        type: 'input',
+        name: 'timeout',
+        message: 'In quanto secondi pensi di riuscire a rispondere?',
+        validate(val: number) {
+            return !isNaN(val)
+        },
+        default: undefined
+    }
+];
 
 console.log(figlet.textSync("Impara   la   matematica"));
 
 (async () => {
     while (true) {
         console.log()
-        const questions = [
-            {
-                type: 'input',
-                name: 'number',
-                message: 'Vuoi provare la tabellina del?',
-                validate(val: number) {
-                    return !isNaN(val)
-                }
-            },
-            {
-                type: 'list',
-                name: 'mode',
-                message: 'In che ordine?',
-                choices: [
-                    {name: 'Crescente', value: ETimesTableMode.ascending},
-                    {name: 'Decrescente', value: ETimesTableMode.descending},
-                    {name: 'Casuale', value: ETimesTableMode.random},
-                ],
-            },
-            {
-                type: 'input',
-                name: 'timeout',
-                message: 'In quanto secondi pensi di riuscire a rispondere?',
-                validate(val: number) {
-                    return !isNaN(val)
-                },
-                default: undefined
-            }
-        ];
-        const {number, mode, timeout} = await inquirer.prompt(questions)
+        const {Game} = await inquirer.prompt({
+            type: 'list',
+            name: 'Game',
+            message: 'Quale gioco vuoi fare?',
+            choices: [
+                {name: 'Tabelline', value: TimesTable},
+                {name: 'Numeri amici', value: FriendNumbers},
+            ],
+        })
+        const {number, mode, timeout} = await inquirer.prompt(gameConfigQuestions)
 
-        const timesTable = new TimesTable(number, mode, timeout * 1000)
+        const timesTable = new Game(number, mode, timeout * 1000)
         await runGame(timesTable);
     }
 })();
@@ -59,7 +70,7 @@ async function runGame(timesTable: IMathGame) {
         })
         const result = challenge.answer(answer)
 
-        if (result.correct) {
+        if (result.isCorrect()) {
             console.log(chalk.green(' Giusto!! 🥳'))
             challenge = timesTable.challenge()
         } else {

@@ -95,15 +95,15 @@ describe('Given a times table value of 2 multiplied to 1 challenge', function ()
         const result = challenge?.answer(2)
 
         it('should return correct', function () {
-            expect(result?.toString()).toEqual('Correct!')
+            expect(result?.isCorrect()).toBeTruthy()
         });
     });
 
     describe('When I try the wrong answer', function () {
         const result = challenge?.answer(0)
 
-        it('should return correct', function () {
-            expect(result?.toString()).toEqual('Wrong!')
+        it('should return wrong', function () {
+            expect(result?.isCorrect()).toBeFalsy()
         });
     });
 });
@@ -126,7 +126,7 @@ describe('Given a times table value of 2', function () {
             const result = challenge?.answer(6)
 
             it('should return correct', function () {
-                expect(result?.toString()).toEqual('Correct!')
+                expect(result?.isCorrect()).toBeTruthy()
             });
         });
     });
@@ -150,7 +150,7 @@ describe('Given a times table value of 3', function () {
             const result = challenge?.answer(12)
 
             it('should return correct', function () {
-                expect(result?.toString()).toEqual('Correct!')
+                expect(result?.isCorrect()).toBeTruthy()
             });
         });
     });
