@@ -9,7 +9,7 @@ export interface IChallenge {
 export abstract class Challenge implements IChallenge {
     protected readonly requestedTime: number
 
-    protected constructor(protected readonly number1: number, protected readonly number2: number, protected readonly timeOut?: number) {
+    constructor(protected readonly number1: number, protected readonly number2: number, protected readonly timeOut?: number) {
         this.requestedTime = Date.now()
     }
 

@@ -1,17 +1,12 @@
 import {MathGame} from "./math-game.class";
-import {ETimesTableMode} from "./multiplication-tables";
-import {Challenge, IChallenge} from "./challenge.class";
+import {Challenge} from "./challenge.class";
 
 export class FriendNumbers extends MathGame {
     protected currentNumber: number;
 
-    constructor(timeOut?: number, mode?: ETimesTableMode) {
-        super(10, timeOut)
+    constructor(timeOut?: number) {
+        super(FriendNumbersChallenge, 10, timeOut)
         this.currentNumber = 0
-    }
-
-    createChallenge(number2?: number): IChallenge | null {
-        return new FriendNumbersChallenge(this.number1, number2 || this.currentNumber, this.timeOut)
     }
 
     isFinished(): boolean {
@@ -24,7 +19,9 @@ export class FriendNumbers extends MathGame {
 }
 
 class FriendNumbersChallenge extends Challenge {
-    constructor(protected readonly number1: number, protected readonly number2: number, protected readonly timeOut?: number) {
+    constructor(protected readonly number1: number,
+                protected readonly number2: number,
+                protected readonly timeOut?: number) {
         super(number1, number2, timeOut);
     }
 

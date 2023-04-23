@@ -32,17 +32,12 @@ export class TimesTable implements IMathGame {
     }
 }
 
-
 class TimesTableDescending extends MathGame {
     protected currentNumber: number
 
     constructor(number1: number, timeOut?: number) {
-        super(number1, timeOut);
+        super(TimesTableChallenge, number1, timeOut);
         this.currentNumber = 10
-    }
-
-    createChallenge(number2: number | undefined) {
-        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
     }
 
     protected nextNumber() {
@@ -58,12 +53,8 @@ class TimesTableAscending extends MathGame {
     protected currentNumber: number
 
     constructor(number1: number, timeOut?: number) {
-        super(number1, timeOut)
+        super(TimesTableChallenge, number1, timeOut)
         this.currentNumber = 0
-    }
-
-    createChallenge(number2: number | undefined) {
-        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
     }
 
     protected nextNumber() {
@@ -80,13 +71,9 @@ class TimesTableRandom extends MathGame {
     private counter: number
 
     constructor(number1: number, timeOut?: number) {
-        super(number1, timeOut)
+        super(TimesTableChallenge, number1, timeOut)
         this.currentNumber = Math.floor(Math.random() * 11);
         this.counter = 0
-    }
-
-    createChallenge(number2: number | undefined) {
-        return new TimesTableChallenge(this.number1, number2 || this.currentNumber, this.timeOut);
     }
 
     protected nextNumber() {
