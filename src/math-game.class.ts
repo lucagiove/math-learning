@@ -1,10 +1,6 @@
-import {Challenge, IChallenge} from "./challenge.class";
+import {Challenge} from "./challenge.class";
 
-export interface IMathGame {
-    challenge: (number?: number) => IChallenge | null
-}
-
-export abstract class MathGame implements IMathGame {
+export abstract class MathGame {
     protected abstract currentNumber: number
 
     protected constructor(protected readonly challengeClass: new (number1: number, number2: number, timeOut?: number) => Challenge,
@@ -12,7 +8,7 @@ export abstract class MathGame implements IMathGame {
                           protected readonly timeOut?: number) {
     }
 
-    challenge(number2?: number): IChallenge | null {
+    challenge(number2?: number): Challenge | null {
         if (this.isFinished()) return null
         const result = this.createChallenge(number2);
         this.nextNumber();
@@ -21,7 +17,7 @@ export abstract class MathGame implements IMathGame {
 
     protected abstract isFinished(): boolean;
 
-    protected createChallenge(number2?: number): IChallenge | null {
+    protected createChallenge(number2?: number): Challenge | null {
         return new this.challengeClass(
             this.number1,
             number2 || this.currentNumber,

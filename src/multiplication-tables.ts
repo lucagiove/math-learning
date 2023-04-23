@@ -1,5 +1,5 @@
-import {IMathGame, MathGame} from "./math-game.class";
-import {Challenge, IChallenge} from "./challenge.class";
+import {MathGame} from "./math-game.class";
+import {Challenge} from "./challenge.class";
 
 export enum ETimesTableMode {
     ascending = 'ascending',
@@ -7,8 +7,8 @@ export enum ETimesTableMode {
     random = 'random'
 }
 
-export class TimesTable implements IMathGame {
-    private timesTableMode: IMathGame
+export class TimesTable {
+    private timesTableMode: MathGame
 
     constructor(private readonly number1: number,
                 private readonly mode: ETimesTableMode,
@@ -27,7 +27,7 @@ export class TimesTable implements IMathGame {
         }
     }
 
-    challenge(number?: number): IChallenge | null {
+    challenge(number?: number): Challenge | null {
         return this.timesTableMode.challenge(number)
     }
 }

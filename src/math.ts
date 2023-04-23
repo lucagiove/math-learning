@@ -2,10 +2,10 @@
 
 import * as figlet from "figlet";
 import {ETimesTableMode, TimesTable} from "./multiplication-tables";
-import {IMathGame} from "./math-game.class";
 import inquirer from "inquirer";
 import chalk from "chalk";
 import {FriendNumbers} from "./friend.numbers";
+import {MathGame} from "./math-game.class";
 
 const gameConfigQuestions = [
     {
@@ -42,9 +42,9 @@ console.log(figlet.textSync("Impara   la   matematica"));
 (async () => {
     while (true) {
         console.log()
-        const {Game} = await inquirer.prompt({
+        const gameAnswer = await inquirer.prompt({
             type: 'list',
-            name: 'Game',
+            name: 'game',
             message: 'Quale gioco vuoi fare?',
             choices: [
                 {name: 'Tabelline', value: TimesTable},
@@ -53,13 +53,14 @@ console.log(figlet.textSync("Impara   la   matematica"));
         })
         const {number, mode, timeout} = await inquirer.prompt(gameConfigQuestions)
 
-        const timesTable = new Game(number, mode, timeout * 1000)
-        await runGame(timesTable);
+        const Game: any  = gameAnswer.game
+        const mathGame = new Game(number, mode, timeout * 1000)
+        await runGame(mathGame);
     }
 })();
 
-async function runGame(timesTable: IMathGame) {
-    let challenge = timesTable.challenge()
+async function runGame(mathGame: MathGame) {
+    let challenge = mathGame.challenge()
 
     while (challenge) {
         const {answer} = await inquirer.prompt({
@@ -72,7 +73,7 @@ async function runGame(timesTable: IMathGame) {
 
         if (result.isCorrect()) {
             console.log(chalk.green(' Giusto!! 🥳'))
-            challenge = timesTable.challenge()
+            challenge = mathGame.challenge()
         } else {
             console.log(chalk.red(' Sbagliato!!') + ' 🤯 riprova')
         }

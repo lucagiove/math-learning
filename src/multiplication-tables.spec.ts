@@ -1,6 +1,6 @@
 import {ETimesTableMode, TimesTable} from "./multiplication-tables";
 import {Answer} from "./answer.class";
-import {IChallenge} from "./challenge.class";
+import {Challenge} from "./challenge.class";
 
 describe('Given a times table value of 2 in ascending mode', function () {
     const timesTable = new TimesTable(2, ETimesTableMode.ascending)
@@ -26,7 +26,7 @@ describe('Given a times table value of 2 in ascending mode', function () {
     const timesTable = new TimesTable(2, ETimesTableMode.ascending)
 
     describe('When I ask for all challenges', function () {
-        let challenge: IChallenge | null
+        let challenge: Challenge | null
         for (let i = 0; i <= 11; i++) {
             challenge = timesTable.challenge()
         }
@@ -42,7 +42,7 @@ describe('Given a times table value of 2 in descending mode', function () {
     const timesTable = new TimesTable(2, ETimesTableMode.descending)
 
     describe('When I ask for all challenges', function () {
-        let challenge: IChallenge | null
+        let challenge: Challenge | null
         for (let i = 0; i <= 11; i++) {
             challenge = timesTable.challenge()
         }

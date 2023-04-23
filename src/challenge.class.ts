@@ -1,12 +1,6 @@
 import {Answer, CorrectAnswer, WrongAnswer} from "./answer.class";
 
-export interface IChallenge {
-    toString(): string;
-
-    answer(number: number): Answer;
-}
-
-export abstract class Challenge implements IChallenge {
+export abstract class Challenge implements Challenge {
     protected readonly requestedTime: number
 
     constructor(protected readonly number1: number, protected readonly number2: number, protected readonly timeOut?: number) {
