@@ -1,9 +1,10 @@
-import { ETimesTableModes, TimesTableModes } from './multiplication-tables';
+import { TimesTableModes } from './times-table';
 import { type Answer } from './answer.class';
 import { type Challenge } from './challenge.class';
+import { EAscDescRandomModes } from './math-game.class';
 
 describe('Given a times table value of 2 in ascending mode', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending);
 
     describe('When I ask for a challenge', function () {
         const challenge = timesTable.challenge();
@@ -23,7 +24,7 @@ describe('Given a times table value of 2 in ascending mode', function () {
 });
 
 describe('Given a times table value of 2 in ascending mode', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending);
 
     describe('When I ask for all challenges', function () {
         let challenge: Challenge | null;
@@ -38,7 +39,7 @@ describe('Given a times table value of 2 in ascending mode', function () {
 });
 
 describe('Given a times table value of 2 in descending mode', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.descending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.descending);
 
     describe('When I ask for all challenges', function () {
         let challenge: Challenge | null;
@@ -53,7 +54,7 @@ describe('Given a times table value of 2 in descending mode', function () {
 });
 
 describe('Given a times table value of 2 in descending mode', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.descending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.descending);
 
     describe('When I ask for a challenge', function () {
         const challenge = timesTable.challenge();
@@ -73,7 +74,7 @@ describe('Given a times table value of 2 in descending mode', function () {
 });
 
 describe('Given a times table value of 2 in random mode', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.random);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.random);
 
     describe('When I ask for a challenge twice', function () {
         const challenge1 = timesTable.challenge();
@@ -89,7 +90,7 @@ describe('Given a times table value of 2 in random mode', function () {
 });
 
 describe('Given a times table value of 2 multiplied to 1 challenge', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending);
     const challenge = timesTable.challenge(1);
 
     describe('When I try the right answer', function () {
@@ -110,7 +111,7 @@ describe('Given a times table value of 2 multiplied to 1 challenge', function ()
 });
 
 describe('Given a times table value of 2', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending);
 
     describe('And challenge multiplied to 3', function () {
         const challenge = timesTable.challenge(3);
@@ -134,7 +135,7 @@ describe('Given a times table value of 2', function () {
 });
 
 describe('Given a times table value of 3', function () {
-    const timesTable = new TimesTableModes().factory(3, ETimesTableModes.ascending);
+    const timesTable = new TimesTableModes().factory(3, EAscDescRandomModes.ascending);
 
     describe('And challenge multiplied to 4', function () {
         const challenge = timesTable.challenge(4);
@@ -158,7 +159,7 @@ describe('Given a times table value of 3', function () {
 });
 
 describe('Given a times table value of 2 with timeout', function () {
-    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending, 20);
+    const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending, 20);
 
     describe('When I answer a challenge after timeout', function () {
         let result: Answer | undefined;

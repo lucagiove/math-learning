@@ -32,3 +32,9 @@ export abstract class MathGameModes<EModesType extends string | number | symbol>
         return new this.gameModes[mode](number1, timeOut);
     }
 }
+
+export enum EAscDescRandomModes {
+    ascending = 'ascending',
+    descending = 'descending',
+    random = 'random',
+}

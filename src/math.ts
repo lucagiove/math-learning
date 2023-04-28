@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import * as figlet from 'figlet';
-import { ETimesTableModes, TimesTableModes } from './multiplication-tables';
+import { TimesTableModes } from './times-table';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { FriendNumbers } from './friend.numbers';
-import { type MathGame } from './math-game.class';
+import { FriendNumbersModes } from './friend.numbers';
+import { EAscDescRandomModes, type MathGame, type MathGameModes } from './math-game.class';
 
 const gameConfigQuestions = [
     {
@@ -21,9 +21,9 @@ const gameConfigQuestions = [
         name: 'mode',
         message: 'In che ordine?',
         choices: [
-            { name: 'Crescente', value: ETimesTableModes.ascending },
-            { name: 'Decrescente', value: ETimesTableModes.descending },
-            { name: 'Casuale', value: ETimesTableModes.random },
+            { name: 'Crescente', value: EAscDescRandomModes.ascending },
+            { name: 'Decrescente', value: EAscDescRandomModes.descending },
+            { name: 'Casuale', value: EAscDescRandomModes.random },
         ],
     },
     {
@@ -48,12 +48,12 @@ void (async () => {
             message: 'Quale gioco vuoi fare?',
             choices: [
                 { name: 'Tabelline', value: TimesTableModes },
-                { name: 'Numeri amici', value: FriendNumbers },
+                { name: 'Numeri amici', value: FriendNumbersModes },
             ],
         });
         const { number, mode, timeout } = await inquirer.prompt(gameConfigQuestions);
 
-        const Game: TimesTableModes = new gameAnswer.Game();
+        const Game: MathGameModes<EAscDescRandomModes> = new gameAnswer.Game();
         const mathGame = Game.factory(number, mode, timeout * 1000);
         await runGame(mathGame);
     }

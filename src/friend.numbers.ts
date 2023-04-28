@@ -1,7 +1,7 @@
-import { MathGame } from './math-game.class';
+import { type EAscDescRandomModes, MathGame, MathGameModes } from './math-game.class';
 import { Challenge } from './challenge.class';
 
-export class FriendNumbers extends MathGame {
+export class FriendNumbersAscending extends MathGame {
     protected currentNumber: number;
 
     constructor(timeOut?: number) {
@@ -34,4 +34,12 @@ class FriendNumbersChallenge extends Challenge {
     protected isCorrect(answer: number): boolean {
         return this.number2 + answer === this.number1;
     }
+}
+
+export class FriendNumbersModes extends MathGameModes<EAscDescRandomModes> {
+    protected readonly gameModes: Record<EAscDescRandomModes, new (number1: number, timeOut?: number) => MathGame> = {
+        ascending: FriendNumbersAscending,
+        descending: FriendNumbersAscending, // FIXME
+        random: FriendNumbersAscending, // FIXME
+    };
 }

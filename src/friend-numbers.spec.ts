@@ -1,7 +1,7 @@
-import { FriendNumbers } from './friend.numbers';
+import { FriendNumbersAscending } from './friend.numbers';
 
 describe('Given ten friends number in ascending mode', function () {
-    const friendNumbers = new FriendNumbers();
+    const friendNumbers = new FriendNumbersAscending();
 
     describe('When I ask for a challenge', function () {
         const challenge = friendNumbers.challenge();

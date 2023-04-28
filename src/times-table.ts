@@ -1,4 +1,4 @@
-import { MathGame, MathGameModes } from './math-game.class';
+import { type EAscDescRandomModes, MathGame, MathGameModes } from './math-game.class';
 import { Challenge } from './challenge.class';
 
 class TimesTableDescending extends MathGame {
@@ -70,14 +70,8 @@ class TimesTableChallenge extends Challenge {
     }
 }
 
-export enum ETimesTableModes {
-    ascending = 'ascending',
-    descending = 'descending',
-    random = 'random',
-}
-
-export class TimesTableModes extends MathGameModes<ETimesTableModes> {
-    protected readonly gameModes: Record<ETimesTableModes, new (number1: number, timeOut?: number) => MathGame> = {
+export class TimesTableModes extends MathGameModes<EAscDescRandomModes> {
+    protected readonly gameModes: Record<EAscDescRandomModes, new (number1: number, timeOut?: number) => MathGame> = {
         ascending: TimesTableAscending,
         descending: TimesTableDescending,
         random: TimesTableRandom,
