@@ -1,53 +1,6 @@
 import { MathGame } from './math-game.class';
 import { Challenge } from './challenge.class';
 
-export enum ETimesTableMode {
-    ascending = 'ascending',
-    descending = 'descending',
-    random = 'random',
-}
-
-export class TimesTable {
-    private readonly timesTableMode: MathGame;
-
-    constructor(
-        private readonly number1: number,
-        private readonly mode: ETimesTableMode,
-        private readonly timeOut?: number
-    ) {
-        switch (this.mode) {
-            case ETimesTableMode.ascending:
-                this.timesTableMode = new TimesTableAscending(number1, timeOut);
-                break;
-            case ETimesTableMode.descending:
-                this.timesTableMode = new TimesTableDescending(
-                    number1,
-                    timeOut
-                );
-                break;
-            case ETimesTableMode.random:
-                this.timesTableMode = new TimesTableRandom(number1, timeOut);
-                break;
-        }
-    }
-
-    challenge(number?: number): Challenge | null {
-        return this.timesTableMode.challenge(number);
-    }
-}
-
-export class TimesTableModes {
-    private readonly gameModes = {
-        ascending: TimesTableAscending,
-        descending: TimesTableDescending,
-        random: TimesTableRandom,
-    };
-
-    factory(number1: number, mode: ETimesTableMode, timeOut?: number) {
-        return new this.gameModes[mode](number1, timeOut);
-    }
-}
-
 class TimesTableDescending extends MathGame {
     protected currentNumber: number;
 
@@ -114,5 +67,23 @@ class TimesTableChallenge extends Challenge {
 
     protected isCorrect(number: number) {
         return number === this.number1 * this.number2;
+    }
+}
+
+export enum ETimesTableModes {
+    ascending = 'ascending',
+    descending = 'descending',
+    random = 'random',
+}
+
+export class TimesTableModes {
+    static readonly gameModes: Record<ETimesTableModes, new (number1: number, timeOut?: number) => MathGame> = {
+        ascending: TimesTableAscending,
+        descending: TimesTableDescending,
+        random: TimesTableRandom,
+    };
+
+    factory(number1: number, mode: ETimesTableModes, timeOut?: number) {
+        return new TimesTableModes.gameModes[mode](number1, timeOut);
     }
 }

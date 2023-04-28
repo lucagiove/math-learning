@@ -1,9 +1,9 @@
-import { ETimesTableMode, TimesTable } from './multiplication-tables';
+import { ETimesTableModes, TimesTableModes } from './multiplication-tables';
 import { type Answer } from './answer.class';
 import { type Challenge } from './challenge.class';
 
 describe('Given a times table value of 2 in ascending mode', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.ascending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
 
     describe('When I ask for a challenge', function () {
         const challenge = timesTable.challenge();
@@ -23,7 +23,7 @@ describe('Given a times table value of 2 in ascending mode', function () {
 });
 
 describe('Given a times table value of 2 in ascending mode', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.ascending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
 
     describe('When I ask for all challenges', function () {
         let challenge: Challenge | null;
@@ -38,7 +38,7 @@ describe('Given a times table value of 2 in ascending mode', function () {
 });
 
 describe('Given a times table value of 2 in descending mode', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.descending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.descending);
 
     describe('When I ask for all challenges', function () {
         let challenge: Challenge | null;
@@ -53,7 +53,7 @@ describe('Given a times table value of 2 in descending mode', function () {
 });
 
 describe('Given a times table value of 2 in descending mode', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.descending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.descending);
 
     describe('When I ask for a challenge', function () {
         const challenge = timesTable.challenge();
@@ -73,7 +73,7 @@ describe('Given a times table value of 2 in descending mode', function () {
 });
 
 describe('Given a times table value of 2 in random mode', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.random);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.random);
 
     describe('When I ask for a challenge twice', function () {
         const challenge1 = timesTable.challenge();
@@ -89,7 +89,7 @@ describe('Given a times table value of 2 in random mode', function () {
 });
 
 describe('Given a times table value of 2 multiplied to 1 challenge', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.ascending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
     const challenge = timesTable.challenge(1);
 
     describe('When I try the right answer', function () {
@@ -110,7 +110,7 @@ describe('Given a times table value of 2 multiplied to 1 challenge', function ()
 });
 
 describe('Given a times table value of 2', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.ascending);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending);
 
     describe('And challenge multiplied to 3', function () {
         const challenge = timesTable.challenge(3);
@@ -134,7 +134,7 @@ describe('Given a times table value of 2', function () {
 });
 
 describe('Given a times table value of 3', function () {
-    const timesTable = new TimesTable(3, ETimesTableMode.ascending);
+    const timesTable = new TimesTableModes().factory(3, ETimesTableModes.ascending);
 
     describe('And challenge multiplied to 4', function () {
         const challenge = timesTable.challenge(4);
@@ -158,7 +158,7 @@ describe('Given a times table value of 3', function () {
 });
 
 describe('Given a times table value of 2 with timeout', function () {
-    const timesTable = new TimesTable(2, ETimesTableMode.ascending, 20);
+    const timesTable = new TimesTableModes().factory(2, ETimesTableModes.ascending, 20);
 
     describe('When I answer a challenge after timeout', function () {
         let result: Answer | undefined;

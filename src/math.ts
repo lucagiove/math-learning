@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import * as figlet from 'figlet';
-import { ETimesTableMode, TimesTableModes } from './multiplication-tables';
+import { ETimesTableModes, TimesTableModes } from './multiplication-tables';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { FriendNumbers } from './friend.numbers';
@@ -21,9 +21,9 @@ const gameConfigQuestions = [
         name: 'mode',
         message: 'In che ordine?',
         choices: [
-            { name: 'Crescente', value: ETimesTableMode.ascending },
-            { name: 'Decrescente', value: ETimesTableMode.descending },
-            { name: 'Casuale', value: ETimesTableMode.random },
+            { name: 'Crescente', value: ETimesTableModes.ascending },
+            { name: 'Decrescente', value: ETimesTableModes.descending },
+            { name: 'Casuale', value: ETimesTableModes.random },
         ],
     },
     {
@@ -51,9 +51,7 @@ void (async () => {
                 { name: 'Numeri amici', value: FriendNumbers },
             ],
         });
-        const { number, mode, timeout } = await inquirer.prompt(
-            gameConfigQuestions
-        );
+        const { number, mode, timeout } = await inquirer.prompt(gameConfigQuestions);
 
         const Game: TimesTableModes = new gameAnswer.Game();
         const mathGame = Game.factory(number, mode, timeout * 1000);
@@ -81,18 +79,10 @@ async function runGame(mathGame: MathGame): Promise<void> {
         }
 
         if (result.timedOut) {
-            console.log(
-                ' ⏱️ Ci hai messo ' +
-                    chalk.red(result.elapsedTime / 1000) +
-                    ' secondi'
-            );
+            console.log(' ⏱️ Ci hai messo ' + chalk.red(result.elapsedTime / 1000) + ' secondi');
             console.log(chalk.yellow(' Sei stato/a troppo lento/a!! 🐌'));
         } else {
-            console.log(
-                ' ⏱️ Ci hai messo ' +
-                    chalk.green(result.elapsedTime / 1000) +
-                    ' secondi'
-            );
+            console.log(' ⏱️ Ci hai messo ' + chalk.green(result.elapsedTime / 1000) + ' secondi');
         }
     }
 }
