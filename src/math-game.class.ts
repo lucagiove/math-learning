@@ -24,3 +24,11 @@ export abstract class MathGame {
 
     protected abstract nextNumber(): void;
 }
+
+export abstract class MathGameModes<EModesType extends string | number | symbol> {
+    protected abstract readonly gameModes: Record<EModesType, new (number1: number, timeOut?: number) => MathGame>;
+
+    factory(number1: number, mode: EModesType, timeOut?: number) {
+        return new this.gameModes[mode](number1, timeOut);
+    }
+}

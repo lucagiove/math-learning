@@ -1,4 +1,4 @@
-import { MathGame } from './math-game.class';
+import { MathGame, MathGameModes } from './math-game.class';
 import { Challenge } from './challenge.class';
 
 class TimesTableDescending extends MathGame {
@@ -76,14 +76,10 @@ export enum ETimesTableModes {
     random = 'random',
 }
 
-export class TimesTableModes {
-    static readonly gameModes: Record<ETimesTableModes, new (number1: number, timeOut?: number) => MathGame> = {
+export class TimesTableModes extends MathGameModes<ETimesTableModes> {
+    protected readonly gameModes: Record<ETimesTableModes, new (number1: number, timeOut?: number) => MathGame> = {
         ascending: TimesTableAscending,
         descending: TimesTableDescending,
         random: TimesTableRandom,
     };
-
-    factory(number1: number, mode: ETimesTableModes, timeOut?: number) {
-        return new TimesTableModes.gameModes[mode](number1, timeOut);
-    }
 }
