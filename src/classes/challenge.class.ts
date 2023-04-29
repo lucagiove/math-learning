@@ -12,11 +12,7 @@ export abstract class Challenge implements Challenge {
     }
 
     static factory(
-        ChallengeClass: new (
-            number1: number,
-            number2: number,
-            timeOut?: number
-        ) => Challenge,
+        ChallengeClass: new (number1: number, number2: number, timeOut?: number) => Challenge,
         number1: number,
         number2: number,
         timeOut?: number
@@ -28,11 +24,7 @@ export abstract class Challenge implements Challenge {
 
     answer(number: number): Answer {
         const elapsedTime = this.countElapsedTime();
-        if (this.isCorrect(number))
-            return new CorrectAnswer(
-                elapsedTime,
-                this.checkTimeOut(elapsedTime)
-            );
+        if (this.isCorrect(number)) return new CorrectAnswer(elapsedTime, this.checkTimeOut(elapsedTime));
         return new WrongAnswer(elapsedTime, this.checkTimeOut(elapsedTime));
     }
 

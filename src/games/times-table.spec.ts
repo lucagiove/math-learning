@@ -1,7 +1,7 @@
 import { TimesTableModes } from './times-table';
-import { type Answer } from './answer.class';
-import { type Challenge } from './challenge.class';
-import { EAscDescRandomModes } from './math-game.class';
+import { type Answer } from '../classes/answer.class';
+import { type Challenge } from '../classes/challenge.class';
+import { EAscDescRandomModes } from '../classes/math-game.class';
 
 describe('Given a times table value of 2 in ascending mode', function () {
     const timesTable = new TimesTableModes().factory(2, EAscDescRandomModes.ascending);

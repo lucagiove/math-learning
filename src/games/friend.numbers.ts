@@ -1,5 +1,5 @@
-import { type EAscDescRandomModes, MathGame, MathGameModes } from './math-game.class';
-import { Challenge } from './challenge.class';
+import { type EAscDescRandomModes, MathGame, MathGameModes } from '../classes/math-game.class';
+import { Challenge } from '../classes/challenge.class';
 
 export class FriendNumbersAscending extends MathGame {
     protected currentNumber: number;

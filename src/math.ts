@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import * as figlet from 'figlet';
-import { TimesTableModes } from './times-table';
+import { TimesTableModes } from './games/times-table';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { FriendNumbersModes } from './friend.numbers';
-import { EAscDescRandomModes, type MathGame, type MathGameModes } from './math-game.class';
+import { FriendNumbersModes } from './games/friend.numbers';
+import { EAscDescRandomModes, type MathGame, type MathGameModes } from './classes/math-game.class';
 
 const gameConfigQuestions = [
     {
